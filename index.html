@@ -419,6 +419,8 @@
 			fetch('https://qwk.pythonanywhere.com/l/today', { method: 'GET' })
 				.then(response => response.json())
 				.then(data => {
+					// ts code is so ahh 🥀🥀
+
 					const yesterday = new Date();
 					yesterday.setDate(yesterday.getDate() - 1);
 					let yiso = yesterday.toISOString().split('T')[0];
@@ -450,7 +452,6 @@
 					const totalsub = subvisits(Object.fromEntries(
 						Object.entries(total).map(([k, v]) => [k, v.visits])
 					));
-					console.log(total);
 
 					const list = document.getElementById('list');
 					const sorted = Object.entries(tweek).sort((a, b) => b[1] - a[1]);
@@ -462,8 +463,6 @@
 						sub.innerHTML = `<h2>${k}</h2><p>${format(v)}<span style="color: #${change >= 0 ? '0f0">+' : 'f00">'}${change}%</span></p><h3>${format(totalsub[k] ?? 0)}</h3>`;
 						list.appendChild(sub);
 					}
-					console.log(tweek);
-					console.log(lweek);
 				})
 				.catch(error => {
 					alert('Error fetching visit history:', error);
