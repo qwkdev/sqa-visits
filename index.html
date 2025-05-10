@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Dashboard</title>
+	<title>Visit Tracker | SQA.MY</title>
 
 	<style>
 		:root {
@@ -59,7 +59,7 @@
 			height: calc(100vh - var(--gap));
 			display: grid;
 
-			grid-template-columns: 1fr 2fr 3fr 3fr;
+			grid-template-columns: 1fr 2.5fr 3fr 3fr;
 			grid-template-rows: 1fr 3fr 6fr;
 			gap: var(--gap);
 		}
@@ -214,6 +214,7 @@
 
 		#subjects {
 			background: transparent;
+			height: 100%;
 		}
 		#scroll-container {
 			overflow: hidden;
@@ -222,12 +223,10 @@
 		}
 		#list {
 			display: grid;
+			height: min-content;
 			max-height: 100%;
-			height: max-content;
-
-			overflow-y: scroll;
 			
-
+			overflow-y: scroll;
 			grid-template-columns: 100%;
 			gap: 1px;
 
@@ -282,6 +281,202 @@
 		#list div *::selection {
 			background: #ffffff55;
 		}
+
+		@media only screen and (max-width: 150vh) {
+			#top h1 {
+				font-size: 3.5vh;
+				bottom: 1.2vh;
+			}
+			#sidebar {
+				display: none;
+			}
+		}
+		@media only screen and (max-width: 150vh) and (min-width: 110vh) {
+			.glass h2 {
+				margin-left: 2.4vh;
+				font-size: 2.8vh;
+				height: 7.6vh;
+				line-height: 7.6vh;
+			}
+			.card2 p {
+				font-size: 4vh;
+				left: 50%;
+				transform: translateX(-50%);
+				text-align: center;
+			}
+			#total-visits {
+				top: 6.5vh;
+			}
+			#today-visits {
+				top: 5vh;
+			}
+			#today-visits span {
+				font-size: 3vh;
+				bottom: -80%;
+				right: 50%;
+				transform: translateX(53%);
+			}
+			#bento {
+				margin-left: var(--gap);
+				width: calc(100vw - (var(--gap) * 2));
+				grid-template-columns: 2fr 3fr 3fr;
+			}
+			#top	  { grid-area: 1 / 1 / 2 / 4; }
+			#total    { grid-area: 2 / 1 / 3 / 2; }
+			#today    { grid-area: 2 / 2 / 3 / 3; }
+			#subjects { grid-area: 2 / 3 / 4 / 4; }
+			#graph    { grid-area: 3 / 1 / 4 / 3; }
+		}
+		@media only screen and (max-width: 130vh) and (min-width: 110vh) {
+			#list-header h1 {
+				top: 3.4vh;
+				font-size: 2.5vh;
+				height: 2.5vh;
+			}
+		}
+		@media only screen and (max-width: 110vh) and (min-width: 75vh) {
+			#bento {
+				margin-left: var(--gap);
+				width: calc(100vw - (var(--gap) * 2));
+				height: calc(100vh - var(--gap));
+				grid-template-columns: 5fr 1fr 4fr;
+				grid-template-rows: 1fr 3fr 6fr;
+			}
+			#top	  { grid-area: 1 / 1 / 2 / 4; }
+			#total    { grid-area: 2 / 1 / 3 / 2; }
+			#today    { grid-area: 2 / 2 / 3 / 4; }
+			#subjects { grid-area: 3 / 3 / 4 / 4; }
+			#graph    { grid-area: 3 / 1 / 4 / 3; } 
+
+			#scroll-container {
+				height: calc(.6 * (100vh - (var(--gap) * 3)))
+			}
+			#list-header h1 {
+				font-size: 2.5vh;
+				height: min-content;
+				width: 80%;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+			}
+		}
+		@media only screen and (max-width: 95vh) and (min-width: 75vh) {
+			#list .subject h2 {
+				font-size: 2.5vh;
+			}
+			#list .subject p {
+				font-size: 2vh;
+			}
+			#list .subject h3 {
+				font-size: 2.5vh;
+				top: 1.8vh;
+			}
+		}
+		@media only screen and (max-width: 93vh) and (min-width: 75vh) {
+			.glass h2 {
+				margin-left: 2.4vh;
+				font-size: 2.8vh;
+				height: 7.6vh;
+				line-height: 7.6vh;
+			}
+			.card2 p {
+				font-size: 5vh;
+				left: 50%;
+				transform: translateX(-50%);
+				text-align: center;
+			}
+			#total-visits {
+				top: 6vh;
+			}
+			#today-visits {
+				top: 5vh;
+			}
+			#today-visits span {
+				font-size: 3vh;
+				bottom: -50%;
+				right: 50%;
+				transform: translateX(53%);
+			}
+		}
+		@media only screen and (max-width: 75vh) {
+			#bento {
+				margin-left: var(--gap);
+				margin-bottom: var(--gap);
+				width: calc(100vw - (var(--gap) * 2));
+				height: max-content;
+				grid-template-columns: 1fr;
+				grid-template-rows: 6.5vh 30vh 30vh 50vh 50vh;
+			}
+			#top {
+				grid-area: 1 / 1 / 2 / 2;
+				height: 6.5vh;
+			}
+			#top h1 {
+				width: 100%;
+				text-align: center;
+				bottom: 0;
+			}
+			#total {
+				grid-area: 2 / 1 / 3 / 2;
+				height: 30vh;
+			}
+			#today {
+				grid-area: 3 / 1 / 4 / 2;
+				height: 30vh;
+			}
+			#subjects {
+				grid-area: 5 / 1 / 6 / 2;
+				height: 50vh;
+			}
+			#scroll-container {
+				height: 50vh;
+			}
+			#list-header h1 {
+				font-size: 3vh;
+				height: min-content;
+				width: 80%;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+			}
+			#graph {
+				grid-area: 4 / 1 / 5 / 2;
+				height: 50vh;
+			}
+
+			.glass {
+				height: 8vh;
+			}
+			.card2 {
+				height: calc(100% - 8vh);
+			}
+			.card2 p {
+				font-size: 6vh;
+				left: 50%;
+				transform: translateX(-50%);
+				text-align: center;
+			}
+			#total-visits {
+				top: 6.5vh;
+			}
+			#today-visits {
+				top: 5vh;
+			}
+			#today-visits span {
+				font-size: 3vh;
+				bottom: -50%;
+				right: 50%;
+				transform: translateX(53%);
+			}
+		}
+		@media only screen and (max-width: 60vh) {
+			#top h1 {
+				height: 6vw;
+				font-size: 5.8vw;
+				
+				bottom: calc(var(--gap) - 6vw);
+			}
+		}
 	</style>
 </head>
 <body>
@@ -290,7 +485,7 @@
 	</div>
 	<main id="bento">
 		<div id="top">
-			<h1>QTrack - V2.1.1 - SQA.MY - TEST VERSION; WIP</h1>
+			<h1>QTrack - V2.1.1 - SQA.MY</h1>
 		</div>
 		<div id="total">
 			<div class="glass border cursor">
@@ -345,6 +540,8 @@
 	</script>
 	<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 	<script>
+		const subnames = { "accounting": "Accounting", "esol": "ESOL", "politics": "Politics", "dance": "Dance", "apps": "Apps", "art": "Art", "bio": "Biology", "business": "Business", "canto": "Canto", "chem": "Chemistry", "computing": "Computing", "dm": "D&M", "drama": "Drama", "engineering": "Engineering", "english": "English", "french": "French", "geo": "Geography", "graphics": "Graphics", "history": "History", "humanbio": "Human Bio", "maths": "Maths", "mody": "Mody", "music": "Music", "musictech": "Music Tech", "philosophy": "Philosophy", "photography": "Photography", "pe": "PE", "physics": "Physics", "rmps": "RMPS", "spanish": "Spanish" };
+
 		function round(num, places) {
 			const factor = Math.pow(10, places);
 			const resp = Math.round(num * factor) / factor;
@@ -464,7 +661,7 @@
 						sub.classList.add('subject');
 						const lwv = lweek[k] ?? 0;
 						const change = round(((v - lwv)/(lwv > 0 ? lwv : 1))*100, 1);
-						sub.innerHTML = `<h2>${k}</h2><p>${format(v)}<span style="color: #${change >= 0 ? '0f0">+' : 'f00">'}${change}%</span></p><h3>${format(totalsub[k] ?? 0)}</h3>`;
+						sub.innerHTML = `<h2>${subnames[k] ?? k}</h2><p>${format(v)}<span style="color: #${change >= 0 ? '0f0">+' : 'f00">'}${change}%</span></p><h3>${format(totalsub[k] ?? 0)}</h3>`;
 						list.appendChild(sub);
 					}
 				})
