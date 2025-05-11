@@ -660,7 +660,7 @@
 						const sub = document.createElement('div');
 						sub.classList.add('subject');
 						const lwv = lweek[k] ?? 0;
-						const span = ``;
+						let span = '';
 						if (lwv > 0) {
 							const change = round(((v - lwv)/lwv)*100, 1);
 							span = `<span style="color: #${change >= 0 ? '0f0">+' : 'f00">'}${change}%</span>`;
