@@ -485,7 +485,7 @@
 	</div>
 	<main id="bento">
 		<div id="top">
-			<h1>QTrack - V2.1.3 - SQA.MY</h1>
+			<h1>QTrack - V2.2.0 - SQA.MY</h1>
 		</div>
 		<div id="total">
 			<div class="glass border cursor">
@@ -590,10 +590,15 @@
 				([k, v]) => ({ x: k, y: v['sqa'] ?? 0 })
 			);
 
-			var options = {
+			var chart = new ApexCharts(document.querySelector("#chart"), {
 				chart: {
 					type: 'area',
-					height: '90%'
+					height: '90%',
+					zoom: {
+						enabled: true,
+						type: 'x',
+						autoScaleYaxis: true
+					}
 				},
 				series: [{
 					name: 'Total Visits',
@@ -611,9 +616,18 @@
 				dataLabels: {
 					enabled: false,
 				}
-			}
-			var chart = new ApexCharts(document.querySelector("#chart"), options);
+			});
 			chart.render();
+
+			const zoomStart = new Date();
+			const zoomEnd = new Date();
+			zoomStart.setDate(zoomStart.getDate() - 30);
+			zoomEnd.setDate(zoomEnd.getDate() - 1);
+
+			chart.zoomX(
+				zoomStart.getTime(),
+				zoomEnd.getTime()
+			);
 		}
 
 		function step3(total, history) {
