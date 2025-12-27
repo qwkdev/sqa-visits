@@ -485,7 +485,7 @@
 	</div>
 	<main id="bento">
 		<div id="top">
-			<h1>QTrack - V2.2.0 - SQA.MY</h1>
+			<h1>QTrack - V2.3.1 - SQA.MY</h1>
 		</div>
 		<div id="total">
 			<div class="glass border cursor">
@@ -665,7 +665,7 @@
 					}
 
 					const totalsub = subvisits(Object.fromEntries(
-						Object.entries(total).map(([k, v]) => [k, v.visits])
+						Object.entries(total).map(([k, v]) => [k, v.v])
 					));
 
 					const list = document.getElementById('list');
@@ -706,7 +706,7 @@
 			.then(response => response.json())
 			.then(data => {
 				const total = totalvisits(Object.fromEntries(
-					Object.entries(data).map(([k, v]) => [k, v.visits])
+					Object.entries(data).map(([k, v]) => [k, v.v])
 				));
 				document.getElementById('total-visits').innerText = format(total);
 				step2(data);
