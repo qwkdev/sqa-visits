@@ -631,7 +631,7 @@
 		}
 
 		function step3(total, history) {
-			fetch('https://qwk.pythonanywhere.com/l/today', { method: 'GET' })
+			fetch('https://qtrack.pythonanywhere.com/counters/today', { method: 'GET' })
 				.then(response => response.json())
 				.then(data => {
 					// ts code is so ahh 🥀🥀
@@ -690,7 +690,7 @@
 		}
 
 		function step2(total) {
-			fetch('https://qwk.pythonanywhere.com/l/history', { method: 'GET' })
+			fetch('https://qtrack.pythonanywhere.com/counters/history', { method: 'GET' })
 				.then(response => response.json())
 				.then(data => {
 					graph(data);
@@ -702,7 +702,7 @@
 				});
 		}
 
-		fetch('https://qwk.pythonanywhere.com/l', { method: 'GET' })
+		fetch('https://qtrack.pythonanywhere.com/counters', { method: 'GET' })
 			.then(response => response.json())
 			.then(data => {
 				const total = totalvisits(Object.fromEntries(
