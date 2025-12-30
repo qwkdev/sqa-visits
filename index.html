@@ -1,564 +1,290 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Visit Tracker | SQA.MY</title>
-
 	<style>
 		:root {
-			--br: 3.5vh;
-			--br2: 3.7vh;
-			--bw: .35vh;
+			--u: 1.4vh;
 
-			--bg: #070708;
-			--main: #1b1b1c;
-			--border: #424244;
+			--bg: #161617;
+			--bg2: #222223;
+			--bg3: #444445;
 
-			--glow-size: 200vh;
-			--glow-clr: #f5f5ff77;
+			--grid: round(calc(2 * var(--u)), 10px);
 		}
 
 		body {
+			margin: 0;
 			background: var(--bg);
-			margin: 0;
-		}
-		.border::before {
-			content: "";
-			position: absolute;
-
-			top: 50%;
-			left: 50%;
-			width: calc(100% + (2 * var(--bw)));
-			height: calc(100% + (2 * var(--bw)));
-			transform: translate(-50%, -50%);
-			background: var(--border);
-			border-radius: var(--br2);
-			z-index: -2;
-		}
-		.glow {
-			--px: calc((var(--glow-x) * 1px) + var(--bw));
-			--py: calc((var(--glow-y) * 1px) + var(--bw));
-
-			display: block;
-			position: absolute;
-			top: calc(0px - var(--bw));
-			left: calc(0px - var(--bw));
-			width: calc(100% + (2 * var(--bw)));
-			height: calc(100% + (2 * var(--bw)));
-			border-radius: var(--br2);
-			background: radial-gradient(var(--glow-size) circle at var(--px) var(--py), var(--glow-clr), transparent 30%);
-
-			z-index: -1;
+			background-image: linear-gradient(0deg, var(--bg2) 0, var(--bg2) 1px, transparent 1px, transparent 100%),
+						linear-gradient(90deg, var(--bg2) 0, var(--bg2) 1px, transparent 1px, transparent 100%);
+			background-size: var(--grid) var(--grid);
 		}
 
-		#bento {
-			--gap: 3.7vh;
-
-			width: calc(100vw - var(--gap));
-			height: calc(100vh - var(--gap));
-			display: grid;
-
-			grid-template-columns: 1fr 2.5fr 3fr 3fr;
-			grid-template-rows: 1fr 3fr 6fr;
-			gap: var(--gap);
-		}
-
-		#top	  { grid-area: 1 / 2 / 2 / 5; }
-		#total    { grid-area: 2 / 2 / 3 / 3; }
-		#today    { grid-area: 2 / 3 / 3 / 4; }
-		#subjects { grid-area: 2 / 4 / 4 / 5; }
-		#graph    { grid-area: 3 / 2 / 4 / 4; }
-
-		.card {
-			width: 100%;
-			height: 100%;
-			position: relative;
-			
-			background: var(--main);
-			border-radius: var(--br);
-		}
-		.glass {
-			width: 100%;
-			height: 30%;
-			position: relative;
-
-			background: var(--border);
-			border-radius: var(--br) var(--br) 0 0;
-
-			z-index: -1;
-		}
-		.glass .glow {
-			border-radius: var(--br2) var(--br2) 0 0;
-		}
-		.glass::before {
-			border-radius: var(--br2) var(--br2) 0 0;
-		}
-		.glass h2 {
-			margin: 0;
-			margin-left: 3vh;
-			color: #fff;
-			font-size: 3.5vh;
-			height: 7.6vh;
-			line-height: 7.6vh;
-
-			font-family: Arial;
-			font-weight: 600;
-		}
-		.glass h2::selection {
-			background: #ffffff55;
-		}
-
-		.card2 {
-			width: 100%;
-			height: 70%;
-			position: relative;
-
-			background: var(--main);
-			border-radius: 0 0 var(--br) var(--br);
-		}
-		.card2 .glow {
-			height: 100%;
-			top: var(--bw);
-			border-radius: 0 0 var(--br) var(--br);
-		}
-		.card2::before {
-			height: 100%;
-			top: calc(50% + var(--bw) - 1px);
-			border-radius: 0 0 var(--br2) var(--br2);
-		}
-		.card2 p {
-			margin: 0;
-			color: #fff;
-			font-size: 7vh;
-
-			position: absolute;
-			top: 5vh;
-			left: 4vh;
-
-			font-family: Arial;
-			font-weight: 500;
-		}
-		.card2 span {
-			margin: 0;
-			font-size: 4vh;
-
-			position: absolute;
-			bottom: .5vh;
-			right: -1vh;
-			transform: translateX(100%);
-
-			font-family: Arial;
-			font-weight: 500;
-		}
-		.card2 p::selection, .card2 span::selection {
-			background: #ffffff55;
-		}
-
-		#sidebar {
+		#grid {
 			position: absolute;
 			top: 0;
 			left: 0;
+			width: 100%;
+			box-sizing: border-box;
 
-			width: 10vw;
-			height: 100vh;
+			display: grid;
 
-			border-radius: 0;
+			padding: round(calc(3 * var(--u)), 10px);
+			gap: calc(1 * var(--u));
 		}
-		#sidebar::before {
-			top: 50%;
-			left: 50%;
-			width: calc(100% + (2 * var(--bw)));
+		.panel {
+			width: 100%;
 			height: 100%;
-			transform: translate(-50%, -50%);
-			border-radius: 0;
-		}
-		#sidebar .glow {
-			border-radius: 0;
-			top: 0;
-			height: 100%;
-		}
-
-		#top {
-			position: relative;
-		}
-		#top h1 {
+			background: var(--bg);
+			border: 1px solid var(--bg2);
+			padding: calc(1 * var(--u));
+			box-sizing: border-box;
 			font-family: monospace;
 			color: #fff;
-			font-weight: 500;
-
+			position: relative;
+		}
+		.panel h1, .panel h2, .panel h3, .panel p {
 			margin: 0;
-			font-size: 5vh;
-			position: absolute;
-			bottom: .6vh;
 		}
-		#top h1::selection {
-			background: #ffffff55;
+		.panel h1 {
+			font-size: calc(4 * var(--u));
+			font-weight: 700;
 		}
-
-		#graph #chart {
-			width: 95%;
-			height: 90%;
+		.panel h1 span {
+			font-size: calc(2 * var(--u));
+		}
+		.panel h2 {
+			font-size: calc(1.5 * var(--u));
+			font-weight: 700;
+		}
+		.panel h2 span {
+			font-size: calc(1 * var(--u));
+		}
+		.panel h3, .panel p {
+			font-size: calc(1.2 * var(--u));
+			font-weight: 500;
+		}
+		.panel h3 span, .panel p span {
+			font-size: calc(1 * var(--u));
+		}
+		.panel span {
+			margin-left: calc(.5 * var(--u));
+			font-weight: 500;
+		}
+		.panel span.positive {
+			color: #0f0;
+		}
+		.panel span.negative {
+			color: #f00;
+		}
+		.panel .center {
 			position: absolute;
 			top: 50%;
 			left: 50%;
 			transform: translate(-50%, -50%);
 		}
-		
+		.panel.list {
+			height: 100%;
+			overflow-y: scroll;
+		}
+		.panel.list .title {
+			margin-bottom: calc(1 * var(--u));
+		}
+		.panel.list .row {
+			border-top: 1px solid var(--bg2);
+			padding: calc(1 * var(--u)) 0;
+			display: grid;
+			grid-template-columns: 1fr auto;
+			grid-template-rows: auto auto;
+			align-items: center;
+		}
+		.panel.list .row h3 {
+			grid-column: 1;
+			grid-row: 1;
+		}
+		.panel.list .row p {
+			grid-column: 1;
+			grid-row: 2;
+		}
+		.panel.list .row h2 {
+			grid-column: 2;
+			grid-row: 1 / span 2;
+		}
+		.panel.list .row:last-of-type {
+			padding-bottom: 0;
+		}
+		.panel.graph h2 {
+			margin-bottom: calc(.5 * var(--u));
+		}
+		#chart {
+			width: 95%;
+			height: min-content;
+			position: absolute;
+			top: 50%;
+			left: 49%;
+			transform: translate(-50%, -50%);
+		}
+
 		.apexcharts-text {
 			fill: #fff !important;
 		}
 		.apexcharts-legend-text {
 			color: #fff !important;
 		}
-
-		#subjects {
-			background: transparent;
-			height: 100%;
+		.apexcharts-gridline {
+			stroke: var(--bg3) !important;
 		}
-		#scroll-container {
-			overflow: hidden;
-			border-radius: var(--br);
-			height: 100%;
+		.apexcharts-tooltip.apexcharts-theme-light {
+			background: var(--bg) !important;
+			border: 1px solid var(--bg2) !important;
 		}
-		#list {
-			display: grid;
-			height: min-content;
-			max-height: 100%;
-			
-			overflow-y: scroll;
-			grid-template-columns: 100%;
-			gap: 1px;
-
-			/* background: linear-gradient(to right, transparent 10%, var(--glow-clr), transparent 90%); */
-			background: transparent;
+		.apexcharts-tooltip-title {
+			background: var(--bg2) !important;
+			border-bottom: 1px solid var(--bg3) !important;
 		}
-		#list div {
-			background: var(--main);
-			width: 100%;
-			height: 10vh;
-			position: relative;
+		.apexcharts-heatmap-rect[val='0'] {
+			fill: transparent !important;
+			stroke: transparent !important;
 		}
-		#list-header h1, #list .subject h2, #list .subject p, #list .subject h3 {
-			margin: 0;
-			position: absolute;
-			color: #fff;
-			font-family: Arial;
-		} 
-		#list-header h1 {
-			top: 3.2vh;
-			width: 100%;
-			font-size: 3vh;
-			height: 3vh;
-			text-align: center;
-			font-weight: 600;
-		}
-		#list .subject h2 {
-			top: 1.8vh;
-			left: 2.5vh;
-			font-size: 3vh;
-			height: 3vh;
-			font-weight: 500;
-		}
-		#list .subject p {
-			bottom: 1.8vh;
-			left: 2.5vh;
-			font-size: 2.5vh;
-			height: 2.5vh;
-			font-weight: 500;
-		}
-		#list .subject p span {
-			margin-left: .5vh;
-			font-size: 2vh;
-		}
-		#list .subject h3 {
-			top: 3.0vh;
-			right: 2.5vh;
-			font-size: 3.5vh;
-			height: 3.5vh;
-			font-weight: 500;
-		}
-		#list div *::selection {
-			background: #ffffff55;
+		.apexcharts-svg {
+			background: transparent !important;
 		}
 
-		@media only screen and (max-width: 150vh) {
-			#top h1 {
-				font-size: 3.5vh;
-				bottom: 1.2vh;
-			}
-			#sidebar {
-				display: none;
+		@media only screen and (max-aspect-ratio: 1/1) {
+			:root {
+				--u: 2vw;
 			}
 		}
-		@media only screen and (max-width: 150vh) and (min-width: 110vh) {
-			.glass h2 {
-				margin-left: 2.4vh;
-				font-size: 2.8vh;
-				height: 7.6vh;
-				line-height: 7.6vh;
-			}
-			.card2 p {
-				font-size: 4vh;
-				left: 50%;
-				transform: translateX(-50%);
-				text-align: center;
-			}
-			#total-visits {
-				top: 6.5vh;
-			}
-			#today-visits {
-				top: 5vh;
-			}
-			#today-visits span {
-				font-size: 3vh;
-				bottom: -80%;
-				right: 50%;
-				transform: translateX(53%);
-			}
-			#bento {
-				margin-left: var(--gap);
-				width: calc(100vw - (var(--gap) * 2));
-				grid-template-columns: 2fr 3fr 3fr;
-			}
-			#top	  { grid-area: 1 / 1 / 2 / 4; }
-			#total    { grid-area: 2 / 1 / 3 / 2; }
-			#today    { grid-area: 2 / 2 / 3 / 3; }
-			#subjects { grid-area: 2 / 3 / 4 / 4; }
-			#graph    { grid-area: 3 / 1 / 4 / 3; }
-		}
-		@media only screen and (max-width: 130vh) and (min-width: 110vh) {
-			#list-header h1 {
-				top: 3.4vh;
-				font-size: 2.5vh;
-				height: 2.5vh;
-			}
-		}
-		@media only screen and (max-width: 110vh) and (min-width: 75vh) {
-			#bento {
-				margin-left: var(--gap);
-				width: calc(100vw - (var(--gap) * 2));
-				height: calc(100vh - var(--gap));
-				grid-template-columns: 5fr 1fr 4fr;
-				grid-template-rows: 1fr 3fr 6fr;
-			}
-			#top	  { grid-area: 1 / 1 / 2 / 4; }
-			#total    { grid-area: 2 / 1 / 3 / 2; }
-			#today    { grid-area: 2 / 2 / 3 / 4; }
-			#subjects { grid-area: 3 / 3 / 4 / 4; }
-			#graph    { grid-area: 3 / 1 / 4 / 3; } 
 
-			#scroll-container {
-				height: calc(.6 * (100vh - (var(--gap) * 3)))
-			}
-			#list-header h1 {
-				font-size: 2.5vh;
-				height: min-content;
-				width: 80%;
-				top: 50%;
-				left: 50%;
-				transform: translate(-50%, -50%);
-			}
+		#title {
+			width: max-content;
 		}
-		@media only screen and (max-width: 95vh) and (min-width: 75vh) {
-			#list .subject h2 {
-				font-size: 2.5vh;
-			}
-			#list .subject p {
-				font-size: 2vh;
-			}
-			#list .subject h3 {
-				font-size: 2.5vh;
-				top: 1.8vh;
-			}
+		#grid {
+			grid-template-columns: 3fr 1fr 1fr 3fr;
+			grid-template-rows: auto auto
+				calc(35 * var(--u))
+				max(30vw, 20vh)
+				auto auto;
+			grid-template-areas: 
+				't t t t'
+				'v1 v1 v2 v2'
+				'l c c c'
+				'h h h h'
+				'd1 d1 d2 d2'
+				'd3 d3 d4 d4';
 		}
-		@media only screen and (max-width: 93vh) and (min-width: 75vh) {
-			.glass h2 {
-				margin-left: 2.4vh;
-				font-size: 2.8vh;
-				height: 7.6vh;
-				line-height: 7.6vh;
-			}
-			.card2 p {
-				font-size: 5vh;
-				left: 50%;
-				transform: translateX(-50%);
-				text-align: center;
-			}
-			#total-visits {
-				top: 6vh;
-			}
-			#today-visits {
-				top: 5vh;
-			}
-			#today-visits span {
-				font-size: 3vh;
-				bottom: -50%;
-				right: 50%;
-				transform: translateX(53%);
-			}
-		}
-		@media only screen and (max-width: 75vh) {
-			#bento {
-				margin-left: var(--gap);
-				margin-bottom: var(--gap);
-				width: calc(100vw - (var(--gap) * 2));
-				height: max-content;
+		@media only screen and (max-aspect-ratio: 1/1.7) {
+			#grid {
 				grid-template-columns: 1fr;
-				grid-template-rows: 6.5vh 30vh 30vh 50vh 50vh;
-			}
-			#top {
-				grid-area: 1 / 1 / 2 / 2;
-				height: 6.5vh;
-			}
-			#top h1 {
-				width: 100%;
-				text-align: center;
-				bottom: 0;
-			}
-			#total {
-				grid-area: 2 / 1 / 3 / 2;
-				height: 30vh;
-			}
-			#today {
-				grid-area: 3 / 1 / 4 / 2;
-				height: 30vh;
-			}
-			#subjects {
-				grid-area: 5 / 1 / 6 / 2;
-				height: 50vh;
-			}
-			#scroll-container {
-				height: 50vh;
-			}
-			#list-header h1 {
-				font-size: 3vh;
-				height: min-content;
-				width: 80%;
-				top: 50%;
-				left: 50%;
-				transform: translate(-50%, -50%);
-			}
-			#graph {
-				grid-area: 4 / 1 / 5 / 2;
-				height: 50vh;
-			}
-
-			.glass {
-				height: 8vh;
-			}
-			.card2 {
-				height: calc(100% - 8vh);
-			}
-			.card2 p {
-				font-size: 6vh;
-				left: 50%;
-				transform: translateX(-50%);
-				text-align: center;
-			}
-			#total-visits {
-				top: 6.5vh;
-			}
-			#today-visits {
-				top: 5vh;
-			}
-			#today-visits span {
-				font-size: 3vh;
-				bottom: -50%;
-				right: 50%;
-				transform: translateX(53%);
+				grid-template-rows: auto auto auto
+					calc(25 * var(--u))
+					calc(30 * var(--u))
+					calc(20 * var(--u))
+					repeat(4, auto);
+				grid-template-areas: 't''v1''v2''l''c''h''d1''d2''d3''d4';
 			}
 		}
-		@media only screen and (max-width: 60vh) {
-			#top h1 {
-				height: 6vw;
-				font-size: 5.8vw;
-				
-				bottom: calc(var(--gap) - 6vw);
+		@media only screen and (min-aspect-ratio: 1.2/1) {
+			#title {
+				width: 100%;
+			}
+			#grid {
+				grid-template-columns: 1fr 1fr 1fr 1fr;
+				grid-template-rows: auto
+					auto auto calc(20 * var(--u)) calc(25 * var(--u))
+					auto;
+				grid-template-areas: 
+					't c c c'
+					'v1 c c c'
+					'v2 c c c'
+					'l c c c'
+					'l h h h'
+					'd1 d2 d3 d4';
 			}
 		}
 	</style>
 </head>
 <body>
-	<div id="sidebar" class="card border cursor">
-		<div class="glow"></div>
-	</div>
-	<main id="bento">
-		<div id="top">
-			<h1>QTrack - V2.3.1 - SQA.MY</h1>
+	<div id="grid">
+		<div class="panel" id="title" style="grid-area: t;">
+			<h2>visits.sqa.my &bullet; qTrack &bullet; v3.1.0</h2>
 		</div>
-		<div id="total">
-			<div class="glass border cursor">
-				<div class="glow"></div>
-				<h2>Total Visits</h2>
-			</div>
-			<div class="card2 border cursor">
-				<div class="glow"></div>
-				<p id="total-visits"></p>
-			</div>
+		<div class="panel" style="grid-area: v1">
+			<h2>Total Visits</h2>
+			<h1 id="total-visits"></h1>
 		</div>
-		<div id="today">
-			<div class="glass border cursor">
-				<div class="glow"></div>
-				<h2>Visits Today</h2>
-			</div>
-			<div class="card2 border cursor">
-				<div class="glow"></div>
-				<p id="today-visits"></p>
+		<div class="panel" style="grid-area: v2">
+			<h2>Visits today</h2>
+			<h1 id="today-visits"></h1>
+		</div>
+		<div class="panel list" id="subjects" style="grid-area: l">
+			<div class="title">
+				<h2>Top Subjects this week</h2>
 			</div>
 		</div>
-		<div id="subjects" class="card border cursor">
-			<div class="glow"></div>
-			<div id="scroll-container">
-				<div id="list">
-					<div id="list-header">
-						<h1>Top Subjects This Week</h1>
-					</div>
-					<!-- <div class="subject">
-						<h2>English</h2>
-						<p>12,345<span style="color: #0f0;">+12%</span></p>
-						<h3>12,345</h3>
-					</div> -->
-				</div>
-			</div>
-		</div>
-		<div id="graph" class="card border cursor">
-			<div class="glow"></div>
+		<div class="panel graph" style="grid-area: c">
 			<div id="chart"></div>
 		</div>
-	</main>
+		<div class="panel graph" style="grid-area: h">
+			<div id="heatmap"></div>
+		</div>
+		<div class="panel graph" style="grid-area: d1">
+			<h2>Qualification Levels</h2>
+			<div id="level-donut"></div>
+		</div>
+		<div class="panel graph" style="grid-area: d2">
+			<h2>Operating Systems</h2>
+			<div id="os-donut"></div>
+		</div>
+		<div class="panel graph" style="grid-area: d3">
+			<h2>Browsers</h2>
+			<div id="browser-donut"></div>
+		</div>
+		<div class="panel graph" style="grid-area: d4">
+			<h2>Referrer Urls</h2>
+			<div id="referrer-donut"></div>
+		</div>
+	</div>
 
-	<script>
-		const cards = document.querySelectorAll(".cursor");
-		document.addEventListener("pointermove", (event) => {
-			cards.forEach((ele) => {
-				const rect = ele.getBoundingClientRect();
-				ele.querySelector('.glow').style.setProperty("--glow-x", event.clientX - rect.left);
-				ele.querySelector('.glow').style.setProperty("--glow-y", event.clientY - rect.top);
-			});
-		});
-	</script>
 	<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 	<script>
 		const subnames = { "admin": "Admin", "accounting": "Accounting", "esol": "ESOL", "politics": "Politics", "dance": "Dance", "apps": "Apps", "art": "Art", "bio": "Biology", "business": "Business", "canto": "Canto", "chem": "Chemistry", "computing": "Computing", "dm": "D&M", "drama": "Drama", "engineering": "Engineering", "english": "English", "french": "French", "geo": "Geography", "graphics": "Graphics", "history": "History", "humanbio": "Human Bio", "maths": "Maths", "mody": "Mody", "music": "Music", "musictech": "Music Tech", "philosophy": "Philosophy", "photography": "Photography", "pe": "PE", "physics": "Physics", "rmps": "RMPS", "spanish": "Spanish" };
-
+		
+		function strip(str, remove, right=false) {
+			if (right) return str.endsWith(remove) ? str.slice(0, -remove.length) : str;
+			return str.startsWith(remove) ? str.slice(remove.length) : str;
+		}
 		function round(num, places) {
 			const factor = Math.pow(10, places);
 			const resp = Math.round(num * factor) / factor;
 			return resp == Math.round(resp) ? Math.round(resp) : resp
 		}
-
-		function format(num) {
-			return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		function formatNumber(num) {
+			return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 		}
 
-		function totalvisits(data) {
+		function getDay(iso) {
+			const resp = (new Date(iso)).getDay();
+			if (resp === 0) return 6;
+			return resp - 1
+		}
+		function getWeekBeginning(iso) {
+			const start = new Date(iso);
+			const delta = start.getDate() - getDay(iso);
+			return new Date(start.setDate(delta));
+		}
+		function formatDate(date) {
+			return date.toLocaleDateString('en-GB', {
+				month: 'short', day: '2-digit'
+			});
+		}
+		function countVisits(data, prefix) {
 			return Object.entries(data)
-				.filter(([k, _]) => k.startsWith('sqa-') || k == 'sqa')
+				.filter(([k, _]) => k.startsWith(prefix+'-') || k == prefix)
 				.reduce((sum, [_, v]) => sum + v, 0);
 		}
-
-		function subvisits(data) {
+		function subjectVisits(data) {
 			let resp = {};
 			for (const key in data) {
 				if (key.startsWith('sqa-') && key.split('-').length >= 3) {
@@ -571,29 +297,75 @@
 			}
 			return resp
 		}
-		function addvisits(data1, data2) {
+		function addObjects(data1, data2) {
 			let resp = data1;
 			for (const key in data2) {
-				if (!resp[key]) {
-					resp[key] = 0;
-				}
+				if (!resp[key]) resp[key] = 0;
 				resp[key] += data2[key];
 			}
 			return resp;
 		}
 
+		function donutGraph(elementId, rawData, threshold=0) {
+			let data;
+			if (threshold === 0) data = rawData;
+			else {
+				let total = Object.values(rawData).reduce((a, b) => a + b, 0);
+				let other = 0;
+				data = {};
+
+				for (const key in rawData) {
+					if ((rawData[key] / total) > threshold) data[key] = rawData[key];
+					else other += rawData[key];
+				}
+				if (other > 0) data['Other'] = other;
+			}
+
+			const donut = new ApexCharts(document.getElementById(elementId), {
+				chart: {
+					type: 'donut',
+				},
+				series: Object.values(data),
+				labels: Object.keys(data),
+				colors: [
+					'#33aaff',
+					'#7755dd',
+					'#22ffbb',
+					// '#3366ff',
+					'#ff4466',
+					'#ffbb22',
+				],
+				plotOptions: {
+					pie: {
+						useFillColorAsStroke: true,
+						minAngleToShowLabel: 10,
+					},
+				},
+				stroke: {
+					show: false
+				},
+				dataLabels: {
+					enabled: true,
+					formatter: function (val) {
+						return Math.round(val) + "%"
+					}
+				}
+			});
+			donut.render()
+		}
+
 		function graph(data) {
-			const tvdata = Object.entries(data).map(
-				([k, v]) => ({ x: k, y: totalvisits(v) })
+			const totalVisits = Object.entries(data).map(
+				([k, v]) => ({ x: k, y: countVisits(v, 'sqa') })
 			);
-			const hvdata = Object.entries(data).map(
+			const homeVisits = Object.entries(data).map(
 				([k, v]) => ({ x: k, y: v['sqa'] ?? 0 })
 			);
 
-			var chart = new ApexCharts(document.querySelector("#chart"), {
+			let chart = new ApexCharts(document.getElementById('chart'), {
 				chart: {
 					type: 'area',
-					height: '90%',
+					height: '95%',
 					zoom: {
 						enabled: true,
 						type: 'x',
@@ -602,10 +374,10 @@
 				},
 				series: [{
 					name: 'Total Visits',
-					data:  tvdata
+					data:  totalVisits
 				}, {
 					name: 'Home Page Visits',
-					data: hvdata
+					data: homeVisits
 				}],
 				xaxis: {
 					type: 'datetime'
@@ -615,106 +387,169 @@
 				],
 				dataLabels: {
 					enabled: false,
+				},
+			});
+			chart.render().then(() => {
+				const zoomStart = new Date();
+				const zoomEnd = new Date();
+				zoomStart.setDate(zoomStart.getDate() - 30);
+				zoomEnd.setDate(zoomEnd.getDate() - 1);
+
+				chart.zoomX(
+					zoomStart.getTime(),
+					zoomEnd.getTime()
+				);
+			});
+
+			let weekdayData = [[], [], [], [], [], [], []];
+			let initialDate = formatDate(getWeekBeginning(totalVisits[0].x));
+			for (let i = 0; i < getDay(totalVisits[0].x); i++) {
+				weekdayData[i].push({ x: initialDate, y: 0 });
+			}
+			totalVisits.forEach(e => weekdayData[getDay(e.x)].push({
+				x: formatDate(getWeekBeginning(e.x)),
+				y: e.y
+			}));
+
+			const series = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+					.map((k, n) => ({ name: k, data: weekdayData[n]}));
+			series.reverse();
+
+			const maxVisits = totalVisits.reduce((m, e) => e.y > m ? e.y : m, -Infinity);
+
+			let heatmap = new ApexCharts(document.getElementById('heatmap'), {
+				chart: {
+					type: 'heatmap',
+					height: '100%'
+				},
+				series: series,
+				plotOptions: {
+					heatmap: {
+						radius: 0,
+						useFillColorAsStroke: true,
+						colorScale: {
+							ranges: [{
+								from: 0,
+								to: 99,
+								color: '#ff9933',
+								name: '<100'
+							}, {
+								from: 100,
+								to: 999,
+								color: '#33aaff',
+								name: '100-1000'
+							}, {
+								from: 999,
+								to: maxVisits,
+								color: '#22ffbb',
+								name: '>1000'
+							}]
+						},
+					},
+				},
+				theme: {
+					mode: 'dark'
+				},
+				stroke: {
+					width: 1
+				},
+				dataLabels: {
+					enabled: false,
 				}
 			});
-			chart.render();
-
-			const zoomStart = new Date();
-			const zoomEnd = new Date();
-			zoomStart.setDate(zoomStart.getDate() - 30);
-			zoomEnd.setDate(zoomEnd.getDate() - 1);
-
-			chart.zoomX(
-				zoomStart.getTime(),
-				zoomEnd.getTime()
+			heatmap.render();
+		}
+		
+		async function init() {
+			const counters = await (await fetch('https://qtrack.pythonanywhere.com/counters')).json();
+			const visitCounters = Object.fromEntries(
+				Object.entries(counters).map(([k, v]) => [k, v.v])
 			);
-		}
+			const total = countVisits(visitCounters, 'sqa');
+			document.getElementById('total-visits').innerText = formatNumber(total);
 
-		function step3(total, history) {
-			fetch('https://qtrack.pythonanywhere.com/counters/today', { method: 'GET' })
-				.then(response => response.json())
-				.then(data => {
-					// ts code is so ahh 🥀🥀
-
-					const yesterday = new Date();
-					yesterday.setDate(yesterday.getDate() - 1);
-					let yiso = yesterday.toISOString().split('T')[0];
-
-					const hvt = totalvisits(data);
-					const hvy = totalvisits(history[yiso]);
-
-					const change = round(((hvt - hvy)/(hvy > 0 ? hvy : 1))*100, 1);
-
-					document.getElementById('today-visits').innerHTML = `${format(hvt)}<span style="color: #${change >= 0 ? '0f0">+' : 'f00">'}${change}%</span>`;
-
-					let tweek = subvisits(data);
-					tweek = addvisits(tweek, subvisits(history[yiso]));
-					for (let i = 0; i < 5; i++) {
-						yesterday.setDate(yesterday.getDate() - 1);
-						yiso = yesterday.toISOString().split('T')[0];
-						tweek = addvisits(tweek, subvisits(history[yiso] ?? {}));
-					}
-
-					yesterday.setDate(yesterday.getDate() - 1);
-					yiso = yesterday.toISOString().split('T')[0];
-					let lweek = subvisits(history[yiso]);
-					for (let i = 0; i < 6; i++) {
-						yesterday.setDate(yesterday.getDate() - 1);
-						yiso = yesterday.toISOString().split('T')[0];
-						lweek = addvisits(lweek, subvisits(history[yiso] ?? {}));
-					}
-
-					const totalsub = subvisits(Object.fromEntries(
-						Object.entries(total).map(([k, v]) => [k, v.v])
-					));
-
-					const list = document.getElementById('list');
-					const sorted = Object.entries(tweek).sort((a, b) => b[1] - a[1]);
-					for (const [k, v] of sorted) {
-						const sub = document.createElement('div');
-						sub.classList.add('subject');
-						const lwv = lweek[k] ?? 0;
-						let span = '';
-						if (lwv > 0) {
-							const change = round(((v - lwv)/lwv)*100, 1);
-							span = `<span style="color: #${change >= 0 ? '0f0">+' : 'f00">'}${change}%</span>`;
-						}
-						sub.innerHTML = `<h2>${subnames[k] ?? k}</h2><p>${format(v)}${span}</p><h3>${format(totalsub[k] ?? 0)}</h3>`;
-						list.appendChild(sub);
-					}
-				})
-				.catch(error => {
-					alert('Error fetching visit history:', error);
-					console.error('Error fetching visit history:', error);
-				});
-		}
-
-		function step2(total) {
-			fetch('https://qtrack.pythonanywhere.com/counters/history', { method: 'GET' })
-				.then(response => response.json())
-				.then(data => {
-					graph(data);
-					step3(total, data);
-				})
-				.catch(error => {
-					alert('Error fetching visit history:', error);
-					console.error('Error fetching visit history:', error);
-				});
-		}
-
-		fetch('https://qtrack.pythonanywhere.com/counters', { method: 'GET' })
-			.then(response => response.json())
-			.then(data => {
-				const total = totalvisits(Object.fromEntries(
-					Object.entries(data).map(([k, v]) => [k, v.v])
-				));
-				document.getElementById('total-visits').innerText = format(total);
-				step2(data);
-			})
-			.catch(error => {
-				alert('Error fetching total visits:', error);
-				console.error('Error fetching total visits:', error);
+			donutGraph('level-donut', {
+				'Nat 5': countVisits(visitCounters, 'sqa-n5'),
+				'Higher': countVisits(visitCounters, 'sqa-h'),
+				'Adv Higher': countVisits(visitCounters, 'sqa-ah')
 			});
+
+			const history = await (await fetch('https://qtrack.pythonanywhere.com/counters/history')).json();
+			graph(history);
+			
+			const today = await (await fetch('https://qtrack.pythonanywhere.com/counters/today')).json();
+			// <!-- TODO: Refactor
+			const yesterday = new Date();
+			yesterday.setDate(yesterday.getDate() - 1);
+			let yiso = yesterday.toISOString().split('T')[0];
+
+			const hvt = countVisits(today, 'sqa');
+			const hvy = countVisits(history[yiso], 'sqa');
+
+			const change = round(((hvt - hvy)/(hvy > 0 ? hvy : 1))*100, 1);
+			document.getElementById('today-visits').innerHTML = `${formatNumber(hvt)}<span class="${change >= 0 ? 'positive">+' : 'negative">'}${change}%</span>`;
+
+			let tweek = subjectVisits(today);
+			tweek = addObjects(tweek, subjectVisits(history[yiso]));
+			for (let i = 0; i < 5; i++) {
+				yesterday.setDate(yesterday.getDate() - 1);
+				yiso = yesterday.toISOString().split('T')[0];
+				tweek = addObjects(tweek, subjectVisits(history[yiso] ?? {}));
+			}
+
+			yesterday.setDate(yesterday.getDate() - 1);
+			yiso = yesterday.toISOString().split('T')[0];
+			let lweek = subjectVisits(history[yiso]);
+			for (let i = 0; i < 6; i++) {
+				yesterday.setDate(yesterday.getDate() - 1);
+				yiso = yesterday.toISOString().split('T')[0];
+				lweek = addObjects(lweek, subjectVisits(history[yiso] ?? {}));
+			}
+
+			const totalsub = subjectVisits(visitCounters);
+
+			const list = document.getElementById('subjects');
+			const sorted = Object.entries(tweek).sort((a, b) => b[1] - a[1]);
+			for (const [k, v] of sorted) {
+				const sub = document.createElement('div');
+				sub.classList.add('row');
+				const lwv = lweek[k] ?? 0;
+				let span = '';
+				if (lwv > 0) {
+					const change = round(((v - lwv)/lwv)*100, 1);
+					span = `<span class="${change >= 0 ? 'positive">+' : 'negative">'}${change}%</span>`;
+				}
+				sub.innerHTML = `<h3>${subnames[k] ?? k}</h3><p>${formatNumber(v)}${span}</p><h2>${formatNumber(totalsub[k] ?? 0)}</h2>`;
+				list.appendChild(sub);
+			}
+			// -->
+			
+			const events = (await (await fetch('https://qtrack.pythonanywhere.com/events')).json())['data'];
+			const eventOsData = {'Unknown': 0};
+			const eventBrowserData = {'Unknown': 0};
+			const eventReferrerData = {'None': 0};
+
+			events.forEach(e => {
+				if (!e.tracker.startsWith('sqa')) return;
+				let os = e.os ?? 'Unknown';
+				let browser = e.browser ?? 'Unknown';
+				let referrer = e.referrer ?? 'None';
+				referrer = strip(referrer, 'https://');
+				referrer = strip(referrer, 'http://');
+				referrer = strip(referrer, 'www.');
+				referrer = strip(referrer, '/', true);
+
+				eventOsData[os] = (eventOsData[os] || 0) + 1;
+				eventBrowserData[browser] = (eventBrowserData[browser] || 0) + 1;
+				eventReferrerData[referrer] = (eventReferrerData[referrer] || 0) + 1;
+			});
+
+			donutGraph('os-donut', eventOsData, 0.01);
+			donutGraph('browser-donut', eventBrowserData, 0.01);
+			donutGraph('referrer-donut', eventReferrerData, 0.01);
+		}
+
+		init();
 	</script>
 </body>
 </html>
