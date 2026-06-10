@@ -208,7 +208,7 @@
 <body>
 	<div id="grid">
 		<div class="panel" id="title" style="grid-area: t;">
-			<h2>visits.scotpapers.com &bullet; qTrack &bullet; v3.1.1</h2>
+			<h2>v.sqa.my &bullet; qTrack &bullet; v3.1.1</h2>
 		</div>
 		<div class="panel" style="grid-area: v1">
 			<h2>Total Visits</h2>
@@ -287,7 +287,7 @@
 		function subjectVisits(data) {
 			let resp = {};
 			for (const key in data) {
-				if (key.startsWith('sqa-') && key.split('-').length >= 3) {
+				if (key.startsWith('p-') && key.split('-').length >= 3) {
 					const sub = key.split('-')[2];
 					if (!resp[sub]) {
 						resp[sub] = 0;
@@ -356,10 +356,10 @@
 
 		function graph(data) {
 			const totalVisits = Object.entries(data).map(
-				([k, v]) => ({ x: k, y: countVisits(v, 'sqa') })
+				([k, v]) => ({ x: k, y: countVisits(v, 'p') })
 			);
 			const homeVisits = Object.entries(data).map(
-				([k, v]) => ({ x: k, y: v['sqa'] ?? 0 })
+				([k, v]) => ({ x: k, y: v['p'] ?? 0 })
 			);
 
 			let chart = new ApexCharts(document.getElementById('chart'), {
@@ -465,13 +465,13 @@
 			const visitCounters = Object.fromEntries(
 				Object.entries(counters).map(([k, v]) => [k, v.v])
 			);
-			const total = countVisits(visitCounters, 'sqa');
+			const total = countVisits(visitCounters, 'p');
 			document.getElementById('total-visits').innerText = formatNumber(total);
 
 			donutGraph('level-donut', {
-				'Nat 5': countVisits(visitCounters, 'sqa-n5'),
-				'Higher': countVisits(visitCounters, 'sqa-h'),
-				'Adv Higher': countVisits(visitCounters, 'sqa-ah')
+				'Nat 5': countVisits(visitCounters, 'p-n5'),
+				'Higher': countVisits(visitCounters, 'p-h'),
+				'Adv Higher': countVisits(visitCounters, 'p-ah')
 			});
 
 			const history = await (await fetch('https://qtrack.pythonanywhere.com/counters/history')).json();
