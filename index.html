@@ -483,8 +483,8 @@
 			yesterday.setDate(yesterday.getDate() - 1);
 			let yiso = yesterday.toISOString().split('T')[0];
 
-			const hvt = countVisits(today, 'sqa');
-			const hvy = countVisits(history[yiso], 'sqa');
+			const hvt = countVisits(today, 'p');
+			const hvy = countVisits(history[yiso], 'p');
 
 			const change = round(((hvt - hvy)/(hvy > 0 ? hvy : 1))*100, 1);
 			document.getElementById('today-visits').innerHTML = `${formatNumber(hvt)}<span class="${change >= 0 ? 'positive">+' : 'negative">'}${change}%</span>`;
@@ -530,7 +530,7 @@
 			const eventReferrerData = {'None': 0};
 
 			events.forEach(e => {
-				if (!e.tracker.startsWith('sqa')) return;
+				if (!e.tracker.startsWith('p')) return;
 				let os = e.os ?? 'Unknown';
 				let browser = e.browser ?? 'Unknown';
 				let referrer = e.referrer ?? 'None';
